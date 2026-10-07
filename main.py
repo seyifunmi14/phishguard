@@ -17,6 +17,22 @@ def detect_urgency(text):
     
     return detected_words
 
+def detect_credentials(text):
+    credentials_words = [
+        "password",
+        "credit card",
+        "pin",
+        "login credentials",
+        "verify your account",
+        "update payment"
+    ]
+    text = text.lower()
+    detected_words = []
+
+    for word in credentials_words:
+        if word in text:
+            detected_words.append(word)
+    return detected_words
 
 def main():
     print("PhishGuard")
@@ -27,7 +43,9 @@ def main():
     body = input("Email body: ")
     
     email_text = subject + " " + body
+
     urgency_results = detect_urgency(email_text)
+    credentials_results = detect_credentials(email_text)
 
     print("\n=== Email Received ===")
     print(f"Sender: {sender}")
@@ -36,6 +54,7 @@ def main():
 
     print("\n=== PhishGuard Analysis ===")
     print(f"Urgency indicators: {urgency_results}")
+    print(f"Credentials indicators: {credentials_results}")
 
 if __name__ == "__main__":
     main()
