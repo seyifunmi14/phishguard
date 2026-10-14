@@ -53,6 +53,30 @@ def classify_risk(risk_score):
         else:
             return "HIGH"
 
+def check_sender(sender):
+    parts = sender.split("@")
+    
+    if len(parts) != 2:
+        return False
+
+    username = parts[0]
+    domain = parts[1]
+
+    if username == "":
+        return False
+    
+    if domain == "":
+        return False
+    
+    if "." not in domain:
+        return False
+    
+    domain_parts = domain.split(".")
+    if domain_parts[0] == "" or domain_parts[-1] == "":
+        return False
+
+    return True
+
     
 def main():
     print("PhishGuard")
@@ -71,6 +95,8 @@ def main():
 
     risk_level = classify_risk(result)
 
+    sender_valid = check_sender(sender)
+
     print("\n=== Email Received ===")
     print(f"Sender: {sender}")
     print(f"Subject: {subject}")
@@ -78,12 +104,14 @@ def main():
 
 
     print("\n=== PhishGuard Analysis ===")
+    print(f"Sender format valid: {sender_valid}")
     print(f"Urgency indicators: {urgency_results}")
     print(f"Credentials indicators: {credentials_results}")
     print(f"Risk Score: {result}")
     print(f"Risk Level: {risk_level}")
+
    
-    
+
 
 
 if __name__ == "__main__":
