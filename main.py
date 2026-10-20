@@ -1,3 +1,5 @@
+import re
+
 # Function to detect urgency-related words and phrases in email text
 def detect_urgency(text):
     urgency_words = [
@@ -8,14 +10,14 @@ def detect_urgency(text):
         "verify now",
         "within 24 hours"
     ]
-    text = text.lower()
-    detected_words = []
+    found = []
 
     for word in urgency_words:
-        if word in text:
-            detected_words.append(word)
-    
-    return detected_words
+       pattern = r"\b" + re.escape(word) + r"\b"
+       if re.search(pattern, text, re.IGNORECASE):
+           found.append(word)
+    return found
+
 
 def detect_credentials(text):
     credentials_words = [
@@ -26,13 +28,13 @@ def detect_credentials(text):
         "verify your account",
         "update payment"
     ]
-    text = text.lower()
-    detected_words = []
+    found = []
 
     for word in credentials_words:
-        if word in text:
-            detected_words.append(word)
-    return detected_words
+        pattern = r"\b" + re.escape(word) + r"\b"
+        if re.search(pattern, text, re.IGNORECASE):
+            found.append(word)
+    return found
 
 def calculate_risk_score(urgency_results, credentials_results):
     urgency_findings = len(urgency_results)

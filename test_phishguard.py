@@ -67,6 +67,11 @@ class TestUrgencyDetection(unittest.TestCase):
         text = "Hello, I hope you are having a good day."
         result = detect_urgency(text)
         self.assertEqual(result, [])
+    
+    def test_no_partial_word_match(self):
+        text = "Please respond urgently."
+        result = detect_urgency(text)
+        self.assertEqual(result, [])
 
 class TestCredentialDetection(unittest.TestCase):
     def test_password_detection(self):
@@ -83,4 +88,10 @@ class TestCredentialDetection(unittest.TestCase):
         text = "Please enter your PASSWORD"
         result = detect_credentials(text)
         self.assertEqual(result, ["password"])
+    
+    def test_no_false_positive_for_pin(self):
+        text = "I am going shopping tomorrow."
+        result = detect_credentials(text)
+        self.assertEqual(result,[])
+
 
